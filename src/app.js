@@ -2,7 +2,7 @@ import app from "./server.js";
 import config from "./configurations/index.js";
 import sequelize from "./database/index.js";
 
-const port = config.PORT || 5000;
+const port = config.PORT;
 
 (async () => {
 	console.log("Awaiting Database Connection");

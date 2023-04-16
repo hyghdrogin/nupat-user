@@ -1,7 +1,4 @@
 import dotenv from "dotenv";
-import pkg from "lodash";
-
-const { isEmpty } = pkg;
 
 dotenv.config();
 
@@ -10,12 +7,21 @@ const config = {
 	DB_URI: process.env.DATABASE_URL
 };
 
-const absentConfig = Object.entries(config)
-	.map(([key, value]) => [key, !!value])
-	.filter(([, value]) => !value)
-	.map(([key]) => [key]);
+Object.entries(config)
+	.map(([key, value]) => {
+		if (key && value) {
+			return { key, value };
+		}
+		if (!key) {
+			console.log(`Missing Key: ${key}`);
+			console.error("Kindly Fix This Error");
+			process.exit(1);
+		}
+		if (!value) {
+			console.log(`Missing Value for Key: ${key}`);
+			console.error("Kindly Fix This Key Error");
+			process.exit(1);
+		}
 
-if (isEmpty(absentConfig)) {
-	throw new Error(`Missing config key/value: ${absentConfig.join(",")}`);
-}
+	});
 export default config;
