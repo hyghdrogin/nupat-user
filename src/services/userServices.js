@@ -1,4 +1,5 @@
-import { newUser } from "../DAO/userDAO.js";
+import { newUser, findById } from "../DAO/userDAO.js";
+
 
 const registerUser = async (name, gender) => {
 	const userDetails = {
@@ -8,6 +9,12 @@ const registerUser = async (name, gender) => {
 	return created;
 };
 
+const findUser = async (userId) => {
+
+	const foundUser =  await findById(userId);
+	return foundUser;
+};
+
 export {
-	registerUser
+	registerUser, findUser
 };

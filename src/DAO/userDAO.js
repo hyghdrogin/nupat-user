@@ -6,6 +6,12 @@ const newUser = async (userDetails) => {
 	return user;
 };
 
+const findById = async(userId) => {
+
+	const user = await User.findById(userId);
+	return user;
+};
+
 export {
-	newUser
+	newUser, findById
 };
