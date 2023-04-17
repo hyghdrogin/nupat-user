@@ -1,4 +1,4 @@
-import { newUser, findById } from "../DAO/userDAO.js";
+import { newUser, findById } from "../dao/userDAO.js";
 
 
 const registerUser = async (name, gender) => {
