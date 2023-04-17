@@ -1,5 +1,4 @@
-import generateToken from "../utilities/jwt/index.js";
-import { registerUser, findUser } from "../services/userServices.js";
+import { registerUser, findUser, userUpdate } from "../services/userServices.js";
 import { validateSignUp } from "../utilities/validations/userValidations.js";
 import { successMessage, errorMessage, errorHandler } from "../utilities/responses.js";
 
@@ -23,9 +22,21 @@ const findUserById = async (req, res) => {
 		const { userId } = req.params;
 		
 		const result = await findUser(userId);
-		const token = generateToken({ userId });
 
-		return successMessage(res, 200, "User fetched Successfully", { result, token });
+		return successMessage(res, 200, "User fetched Successfully", { result });
+	} catch (error) {
+		errorHandler(error, req);
+		return errorMessage(res, 500, error.message);
+	}
+};
+
+const updateUser = async (req, res) => {
+	try {
+		const { userId } = req.params;
+		const { name } = req.body;
+
+		const result = await userUpdate(userId, name);
+		return successMessage(res, 200, "User updated Successfully", { result });
 	} catch (error) {
 		errorHandler(error, req);
 		return errorMessage(res, 500, error.message);
@@ -33,5 +44,5 @@ const findUserById = async (req, res) => {
 };
 
 export {
-	createUser, findUserById
+	createUser, findUserById, updateUser
 };
