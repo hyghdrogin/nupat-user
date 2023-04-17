@@ -1,34 +1,15 @@
-import { DataTypes, UUIDV4 } from "sequelize";
-import sequelize from "../database/index.js";
+import { Schema, model } from "mongoose";
 
-const User = sequelize.define("User", {
-	id: {
-		type: DataTypes.UUID,
-		defaultValue: UUIDV4,
-		primaryKey: true,
-		unique: true
-	},
+const userSchema = new Schema({
 	name: {
-		type: DataTypes.STRING
+		type: String
 	},
 	password: {
-		type: DataTypes.STRING
+		type: String
 	},
 	gender: {
-		type: DataTypes.ENUM(
-			"male", "female", "others"
-		)
+		type: String, enum: ["male", "female", "others"]
 	}
-}, {
-	sequelize,
-	tableName: "user",
-	timestamps: true,
-	modelName: "User"
 });
 
-(async () => {
-	await sequelize.sync({ force: true });
-	console.log("User Table Created Successfully");
-})();
-
-export default User;
+export default model("User", userSchema);

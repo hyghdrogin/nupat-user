@@ -1,9 +1,15 @@
-import { Sequelize } from "sequelize";
+import mongoose from "mongoose";
 import config from "../configurations/index.js";
 
-const sequelize = new Sequelize(config.DB_URI, {
-	logging: false,
-	dialect: "mysql"
-});
+const connect = async() => {
+	mongoose.set("strictQuery", false);
+	const connection = await mongoose.connect(config.DB_URI);
+	if (!connection) {
+		console.log("Database Connection failed, exiting now");
+		process.emit("SIGTERM");
+		process.exit(1);
+	}
+	return connection;
+};
 
-export default sequelize;
+export default { connect };
