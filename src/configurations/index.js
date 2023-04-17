@@ -4,24 +4,17 @@ dotenv.config();
 
 const config = {
 	PORT: process.env.PORT,
-	DB_URI: process.env.DATABASE_URL
+	DB_URI: process.env.DATABASE_URL,
+	JWT: process.env.JWT_KEY
 };
 
-Object.entries(config)
-	.map(([key, value]) => {
-		if (key && value) {
-			return { key, value };
-		}
-		if (!key) {
-			console.log(`Missing Key: ${key}`);
-			console.error("Kindly Fix This Error");
-			process.exit(1);
-		}
-		if (!value) {
-			console.log(`Missing Value for Key: ${key}`);
-			console.error("Kindly Fix This Key Error");
-			process.exit(1);
-		}
+const incompleteConfig = Object.entries(config)
+	.map(([key, value]) => [key, !!value])
+	.filter(([, value]) => !value)
+	.map(([key]) => [key]);
 
-	});
+if (incompleteConfig.length >= 1) {
+	throw new Error(`Missing Configuration Key or Value for: ${incompleteConfig.join(",")}`);
+}
+
 export default config;
