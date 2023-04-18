@@ -6,7 +6,7 @@ import { verifyUser } from "../middleware/authentication.js";
 
 const router = Router();
 
-router.post("users/register", createUser);
+router.post("/users/register", createUser);
 
 router.get("/users/gender/:genderType", verifyUser, findMaleUsers);
 router.get("/users/:userId", findUserById);

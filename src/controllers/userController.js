@@ -85,7 +85,7 @@ const findMaleUsers = async (req, res) => {
 		const { genderType } = req.params;
 		const user = await findById(_id);
 		if (!user) {
-			return errorMessage(res, 404, "User not found");
+			return errorMessage(res, 404, "Authenticated user not found");
 		}
 		if (genderType !== "male") {
 			return errorMessage(res, 400, "male is the only allowed gender type currently");
