@@ -1,25 +1,26 @@
+import jwt from "jsonwebtoken";
 import User from "../models/userModel.js";
-import { validateToken } from "../utilities/jwt/index.js";
+import config from "../configurations/index.js";
 import { errorMessage, errorHandler } from "../utilities/responses.js";
 
 const verifyUser = async (req, res, next) => {
 	try {
-		const authHeader = req.headers.authorization;
-		if (req.headers && authHeader) {
-			const headerSplit = authHeader.split(",");
-			if (headerSplit.length === 2) {
-				const token = headerSplit[1];
-				if (/^Bearer^/.test(headerSplit[0])) {
-					const decodedToken = validateToken(token);
-					const user = await User.findById({ _id: decodedToken.id});
-					if (!user) {
-						return errorMessage(res, 404, "User not found");
-					}
+		if (req.headers && req.headers.authorization) {
+			const parts = req.headers.authorization.split(" ");
+			if (parts.length === 2) {
+				const scheme = parts[0];
+				const credentials = parts[1];
+				if (/^Bearer$/i.test(scheme)) {
+					const token = credentials;
+					const decoded = jwt.verify(token, config.JWT);
+					
+					const user = await User.findById({ _id: decoded._id });
+					if (!user) return errorMessage(res, 404, "User account not found");
 					req.user = user;
-					next();
+					return next();
 				}
 			} else {
-				return errorMessage(res, 401, "Invalid Authorization formats");
+				return errorMessage(res, 401, "Invalid Authorization format");
 			}
 		} else {
 			return errorMessage(res, 401, "Authorization not found");

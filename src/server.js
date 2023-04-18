@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import requestLogger from "./utilities/requestLogger.js";
-import router from "./routes/index.js";
+import router from "./routes/userRoutes.js";
 
 const app = express();
 
