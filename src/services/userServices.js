@@ -1,5 +1,5 @@
 import generateToken from "../utilities/jwt/generateToken.js";
-import { newUser, findById, findByIdAndUpdate, findByIdAndDelete, findUsers, findMaleUsers } from "../dao/userDAO.js";
+import { newUser, findById, findUsers, findMaleUsers } from "../dao/userDAO.js";
 
 
 const registerUser = async (name, gender) => {
@@ -18,13 +18,17 @@ const findUser = async (userId) => {
 };
 
 const userUpdate = async (userId, name) => {
-	const userToUpdate = await findByIdAndUpdate(userId, name);
+	const user = await findById(userId);
+	user.name = name;
+	const userToUpdate = user.save();
 	return userToUpdate;
 };
 
 const userDelete = async (userId) => {
 	
-	const deleteUser = await findByIdAndDelete(userId);
+	const user = await findById(userId);
+	const deleteUser = user.deleteOne();
+	
 	return deleteUser;
 };
 

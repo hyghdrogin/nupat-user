@@ -70,7 +70,6 @@ const deleteUser = async (req, res) => {
 
 const findUsers = async(req, res) => {
 	try {
-		
 		const result = await findAllUsers();
 		return successMessage(res, 200, "All Users fetched", { result });
 	} catch (error) {
@@ -81,16 +80,10 @@ const findUsers = async(req, res) => {
 
 const findMaleUsers = async (req, res) => {
 	try {
-		const { _id } = req.user;
 		const { genderType } = req.params;
-		const user = await findById(_id);
-		if (!user) {
-			return errorMessage(res, 404, "Authenticated user not found");
-		}
 		if (genderType !== "male") {
 			return errorMessage(res, 400, "male is the only allowed gender type currently");
 		}
-		
 		const result = await findMale(genderType);
 		return successMessage(res, 200, "All male users fetched", { result });
 	} catch (error) {

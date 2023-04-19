@@ -12,22 +12,11 @@ const findById = async (userId) => {
 	return user;
 };
 
-const findByIdAndUpdate = async (userId, name) => {
-
-	const user = await User.findByIdAndUpdate(userId, { name }, { new: true });
-	return user;
-};
-
-const findByIdAndDelete = async (userId) => {
-
-	const user = await User.findByIdAndDelete(userId);
-	return user;
-};
-
 const findUsers = async () => {
 
 	const user = await User.find();
-	return user;
+	const count = await User.find().countDocuments();
+	return { count, user };
 };
 
 const findMaleUsers = async (genderType) => {
@@ -38,5 +27,5 @@ const findMaleUsers = async (genderType) => {
 };
 
 export {
-	newUser, findById, findByIdAndUpdate, findByIdAndDelete, findUsers, findMaleUsers
+	newUser, findById, findUsers, findMaleUsers
 };
